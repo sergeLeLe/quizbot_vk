@@ -79,6 +79,7 @@ class VkApiAccessor(BaseAccessor):
                 },
             )
         ) as resp:
+            # принимем данные от вк
             data = await resp.json()
             self.logger.info(data)
             self.ts = data["ts"]
@@ -96,8 +97,8 @@ class VkApiAccessor(BaseAccessor):
                     )
                 )
             return updates
-            #await self.app.store.bots_manager.handle_updates(updates)
 
+    # отправляем на сервер вк
     async def send_message(self, message: Message) -> None:
         async with self.session.get(
             self._build_query(

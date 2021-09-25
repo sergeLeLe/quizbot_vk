@@ -4,6 +4,8 @@ from typing import Optional
 
 from app.store import Store
 
+# лишний файл поллера
+
 
 class Poller:
     def __init__(self, store: Store):
