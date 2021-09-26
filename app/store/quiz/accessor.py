@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 
 from app.base.base_accessor import BaseAccessor
 from app.quiz.models import (
@@ -9,7 +9,6 @@ from app.quiz.models import (
     QuestionModel,
     AnswerModel,
 )
-from typing import List
 
 
 class QuizAccessor(BaseAccessor):

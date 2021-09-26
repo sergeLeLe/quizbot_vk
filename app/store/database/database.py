@@ -3,6 +3,7 @@ from gino.api import Gino
 from app.store.database.gino import db
 from app.admin.models import *
 from app.quiz.models import *
+from app.game.models import *
 from sqlalchemy.engine.url import URL
 
 
@@ -28,6 +29,8 @@ class Database:
         )
         self.db = db
         self.db.bind = self._engine
+
+        #await db.gino.create_all()
 
     async def disconnect(self, *_, **kw):
         await self.db.bind.close()

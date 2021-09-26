@@ -14,7 +14,7 @@ class Games:
     id: int
     chat_id: int
     started_at: datetime
-    finished_at: datetime
+    finished_at: Optional[datetime]
     is_active: bool
     theme_id: Theme
     used_questions: List[Question]
@@ -27,6 +27,7 @@ class Users:
     last_name: str
 
 
+@dataclass
 class Score:
     game_id: int
     user_id: int
@@ -37,9 +38,9 @@ class GamesModel(db.Model):
     __tablename__ = "games"
 
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
-    chat_id = db.Column(db.Integer(), nullabe=False)
-    started_at = db.Column(db.Datetime(timezone=True), server_default=func.now(), nullable=False)
-    finished_at = db.Column(db.Datetime(timezone=True), nullable=False)
+    chat_id = db.Column(db.Integer(), nullable=False)  # возможно уникальным стоит сделать
+    started_at = db.Column(db.DateTime(timezone=True), server_default=func.now(), nullable=False)
+    finished_at = db.Column(db.DateTime(timezone=True))
     is_active = db.Column(db.Boolean, unique=False, default=True)
     theme_id = db.Column(db.Integer(), db.ForeignKey("themes.id", ondelete="SET NULL"), nullable=False)
 
@@ -87,4 +88,4 @@ class ScoreModel(db.Model):
 
     game_id = db.Column(db.Integer, db.ForeignKey('games.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    count_score = db.Column(db.Integer(), nullabe=False)
+    count_score = db.Column(db.Integer(), nullable=False)
