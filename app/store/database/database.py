@@ -1,9 +1,9 @@
 import gino
 from gino.api import Gino
 from app.store.database.gino import db
+from app.game.models import *
 from app.admin.models import *
 from app.quiz.models import *
-from app.game.models import *
 from sqlalchemy.engine.url import URL
 
 

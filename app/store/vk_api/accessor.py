@@ -6,6 +6,7 @@ from aiohttp import TCPConnector
 from aiohttp.client import ClientSession
 
 from app.base.base_accessor import BaseAccessor
+from app.game.models import Users
 from app.store.vk_api.dataclasses import Update, Message, UpdateObject
 from app.store.vk_api.poller import Poller
 
@@ -101,7 +102,7 @@ class VkApiAccessor(BaseAccessor):
                 )
             return updates
 
-    # отправляем на сервер вк
+    # отправляем на сервер вк в лс
     async def send_message(self, message: Message) -> None:
         async with self.session.get(
             self._build_query(
@@ -120,4 +121,29 @@ class VkApiAccessor(BaseAccessor):
             self.logger.info(data)
             #"user_id": message.user_id,
             # "-" + str(self.app.config.bot.group_id), # if only user
+
+    async def get_chat_users(self, chat_id: int) -> list[Users]:
+        async with self.session.get(
+            self._build_query(
+                API_PATH,
+                "messages.getConversationMembers",
+                params={
+                    "group_id": chat_id,
+                    "access_token": self.app.config.bot.token,
+                    "peer_id": 2000000000 + chat_id
+                },
+            )
+        ) as resp:
+            data = await resp.json()
+            self.logger.info(data)
+            users = []
+            for user in data['response']['profiles']:
+                users.append(
+                    Users(
+                        id=user['id'],
+                        first_name=user['first_name'],
+                        last_name=user['last_name']
+                    )
+                )
+            return users
 

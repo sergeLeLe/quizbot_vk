@@ -1,0 +1,8 @@
+venv
+
+config.yml
+
+.idea
+
+alembic/versions/*
+
